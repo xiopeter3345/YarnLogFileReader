@@ -23,6 +23,12 @@ public class YarnLogFileReader
 
     public static void main( String[] args ) throws Exception
     {
+        if(args.length != 1) {
+            System.out.println("Usage: java -classpath <> YarnLogFileReader.YarnLogFileReader <full path of folder contains logs>" );
+            System.out.println("Example: java -classpath '/usr/hdp/2.6.5.3008-11/hadoop/client/*:/usr/hdp/2.6.5.3008-11/hadoop/*:/home/sshuser/YarnLogFileReader/target/YarnLogFileReader-1.0-SNAPSHOT.jar:.:/etc/hadoop/conf' YarnLogFileReader.YarnLogFileReader wasb://lazhuhdi-2019-05-09t07-12-39-811z@lzlazhuhdi.blob.core.windows.net//app-logs/chenghao.guo/logs-ifile/application_1557457099458_0010");
+            System.exit(1);
+        }
+
         Configuration conf = new YarnConfiguration();
 
         YarnLogFileReader app = new YarnLogFileReader();

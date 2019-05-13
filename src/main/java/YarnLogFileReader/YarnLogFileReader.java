@@ -68,7 +68,7 @@ public class YarnLogFileReader
                     String containerStr = String.format("Container: %s on %s", indexedFileLogMeta.getContainerId(), path.getName());
                     sb.append(containerStr + "\n");
                     sb.append("LogType: " + indexedFileLogMeta.getFileName() + "\n");
-                    sb.append("LogLastModifiedTime: " + new Date(indexedFileLogMeta.getLastModifiedTime()) + "\n");
+                    sb.append("LogLastModifiedTime: " + new Date(indexedFileLogMeta.getLastModificatedTime()) + "\n");
                     sb.append("LogLength: " + indexedFileLogMeta.getFileSize() + "\n");
                     sb.append("LogContents:\n");
                     BufferedReader br = new BufferedReader(new InputStreamReader(in));

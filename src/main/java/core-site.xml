@@ -1,0 +1,410 @@
+  <configuration>
+    
+    <property>
+      <name>fs.AbstractFileSystem.wasb.impl</name>
+      <value>org.apache.hadoop.fs.azure.Wasb</value>
+    </property>
+    
+    <property>
+      <name>fs.AbstractFileSystem.wasbs.impl</name>
+      <value>org.apache.hadoop.fs.azure.Wasbs</value>
+    </property>
+    
+    <property>
+      <name>fs.azure.account.auth.type</name>
+      <value>OAuth</value>
+    </property>
+    
+    <property>
+      <name>fs.azure.account.key.astimdevadlsv2.blob.core.windows.net</name>
+      <value>MIIB/QYJKoZIhvcNAQcDoIIB7jCCAeoCAQAxggFdMIIBWQIBADBBMC0xKzApBgNVBAMTImRiZW5jcnlwdGlvbi5oZGluc2lnaHRzZXJ2aWNlcy5uZXQCEGn1kQZ3yGSUT6tNP52Mc74wDQYJKoZIhvcNAQEBBQAEggEACqiqYw+nFjok3f7YWUYNiwQX9hMtTgy0ALLQ/qcCdCTUj38AX67o+c5uUQfTPceJLVU8324rpPXvxO3zT8v7VM+eOeKMggiyRfNYU1xEaV5dFuoiUzAtnJyKos+giLGjmZ1hWd9OmNzcGSQ+0TbnVSjp4KEUWjHEALfA+8ZQyJmx+5BdfOxZDRazUGhOZW6lB3vvMBUeRLVYJ3LYtUsukqxB1Kllnrr5HIyKFNa7s2cgzvnwP8XiTfOAqu/kput9SMdmR4sr54lKbebvTA5jPXgZ9xBZm53a4RgCgAx2X/XmcNBVOCmavSzdcRnbb6es4C1o8EzJtJzomaCRGS7fyzCBgwYJKoZIhvcNAQcBMBQGCCqGSIb3DQMHBAiWtNWkncpHUIBg+JyFHlrWPuo+cVwHVATF6aPs1/BBNGPjW4s+7ApKTaG1CoUc73+HydOMTG+YwDwQziyJYIKSFB2HpsdpxHZSVVQA93w6sHeqnlRKZ4MvTutOMqIG1HDoZUcAeH/X+Mjf</value>
+    </property>
+    
+    <property>
+      <name>fs.azure.account.key.astimdevhdi1.blob.core.windows.net</name>
+      <value>MIIB/QYJKoZIhvcNAQcDoIIB7jCCAeoCAQAxggFdMIIBWQIBADBBMC0xKzApBgNVBAMTImRiZW5jcnlwdGlvbi5oZGluc2lnaHRzZXJ2aWNlcy5uZXQCEGn1kQZ3yGSUT6tNP52Mc74wDQYJKoZIhvcNAQEBBQAEggEAliLHUxkjlAtrqwqUeHQLMFfWjW3KJrBdMlJonV3cL0bi14/yupgRbyXOSuuhEwdYNjleELiKm8ggPfDTSwQmELeerZOw5329hvUv+pGaJCK8de61j3XEIMCJDritSV7T4IzhfzEm5CTi0KkbB29E3I22nPyJVmM5R1hZ80W43RIMNBmNARp8SoHMvH2/RhvO1sZVLTPK6y73o6Cen81SqthjbluLX/62CfB3r338dnogAtHPcMW8KfIl6pN9EbvLLG8PTihFdL6ntGPA1eKx9+4IkO0jyF1gnRmQ+QX3vMoYgRS0t4mJRdiRLRx/o1VKFzTqtRmnwo8r4GVUvuNMeDCBgwYJKoZIhvcNAQcBMBQGCCqGSIb3DQMHBAjB73dw13xVdYBgu0gTD8pldqLvPSalZPNFsSzhjj6/DOUzKAjaBkEvlN/8iJXSd3HeB2pnM+1+dr58BDD9rGfwxbgn5FwRlEBrCWmxKG+5pL1sUcrEDjILLbv/v7INlhY59Z6+g5cB1TFC</value>
+    </property>
+    
+    <property>
+      <name>fs.azure.account.key.astimdevlake.blob.core.windows.net</name>
+      <value>MIIB/QYJKoZIhvcNAQcDoIIB7jCCAeoCAQAxggFdMIIBWQIBADBBMC0xKzApBgNVBAMTImRiZW5jcnlwdGlvbi5oZGluc2lnaHRzZXJ2aWNlcy5uZXQCEGn1kQZ3yGSUT6tNP52Mc74wDQYJKoZIhvcNAQEBBQAEggEAKxtN/3RVDNuusfMvWmk1/ApwvWYUnuwv1Hpk7vjZbkc1QjswOP/36qimRbMUlzh54Tr8FHcgHFrrE2uq+Su9nkx44c/lYkE13XA71LI8Fqp2zR/s9y1La80lIv/syFH0CGhc9PykkvfHGcyAbXGPMNJX5oI7Jr4bbx/B4Wg7BmFmXXnA3jUiUJ6OrcEn5wiRdEs5HhYJEO8q8GjVd7GptJvZQOUE5Iw+ZJ/PrRNgRsH87uz1MFt+ZRuk3rOHZ8tCWI1M2KLWTDWFOQJKk0pp9f3vzgis3y2KVXdV23Dt8aGgaD6rep3KOPied3y66eyItuHNXIAvHpZhu28Z06ALSDCBgwYJKoZIhvcNAQcBMBQGCCqGSIb3DQMHBAhbSoE5n66NRIBg75vl6bVWjH2jP2cFu1YLnLPmWQFDhEvSaP/d/c5XK844tHj3XzmgeiSdxN0NxCk8E+rZhwlS+nGdluDl29VUhPEsYrD+CPjHuGMPvEJiPTaIUgvxBPb8Rwiik5qKH0Cf</value>
+    </property>
+
+
+    
+    <property>
+      <name>fs.azure.account.keyprovider.astimdevadlsv2.blob.core.windows.net</name>
+      <value>org.apache.hadoop.fs.azure.ShellDecryptionKeyProvider</value>
+    </property>
+    
+    <property>
+      <name>fs.azure.account.keyprovider.astimdevhdi1.blob.core.windows.net</name>
+      <value>org.apache.hadoop.fs.azure.ShellDecryptionKeyProvider</value>
+    </property>
+    
+    <property>
+      <name>fs.azure.account.keyprovider.astimdevlake.blob.core.windows.net</name>
+      <value>org.apache.hadoop.fs.azure.ShellDecryptionKeyProvider</value>
+    </property>
+    
+    <property>
+      <name>fs.azure.account.oauth.provider.type</name>
+      <value>org.apache.hadoop.fs.azurebfs.oauth2.ClientCredsTokenProvider</value>
+    </property>
+    
+    <property>
+      <name>fs.azure.account.oauth2.client.endpoint</name>
+      <value>https://login.microsoftonline.com/a394e41c-cf8d-458e-ac1b-ddae1aa15629/oauth2/token</value>
+    </property>
+    
+    <property>
+      <name>fs.azure.account.oauth2.client.id</name>
+      <value>4c1c4952-84ee-4eb5-bdc1-f0897b2cee2f</value>
+    </property>
+    
+    <property>
+      <name>fs.azure.account.oauth2.client.secret</name>
+      <value>grBSN8W8mRpVXRrRRYewLDj08pbMp1sNG+lWmzUxqcc=</value>
+    </property>
+    
+    <property>
+      <name>fs.azure.io.copyblob.retry.max.retries</name>
+      <value>60</value>
+    </property>
+    
+    <property>
+      <name>fs.azure.io.read.tolerate.concurrent.append</name>
+      <value>true</value>
+    </property>
+    
+    <property>
+      <name>fs.azure.page.blob.dir</name>
+      <value>/mapreducestaging,/atshistory,/tezstaging,/ams/hbase/WALs,/ams/hbase/oldWALs,/ams/hbase/MasterProcWALs</value>
+    </property>
+    
+    <property>
+      <name>fs.azure.shellkeyprovider.script</name>
+      <value>/usr/lib/hdinsight-common/scripts/decrypt.sh</value>
+    </property>
+    
+    <property>
+      <name>fs.azure.user.agent.prefix</name>
+      <value>User-Agent: APN/1.0 Hortonworks/1.0 HDP/2.6.5.3003-25</value>
+    </property>
+    
+    <property>
+      <name>fs.defaultFS</name>
+      <value>wasbs://blank@astimdevhdi1.blob.core.windows.net</value>
+      <final>true</final>
+    </property>
+    
+    <property>
+      <name>fs.s3a.fast.upload</name>
+      <value>true</value>
+    </property>
+    
+    <property>
+      <name>fs.s3a.fast.upload.buffer</name>
+      <value>disk</value>
+    </property>
+    
+    <property>
+      <name>fs.s3a.multipart.size</name>
+      <value>67108864</value>
+    </property>
+    
+    <property>
+      <name>fs.s3a.user.agent.prefix</name>
+      <value>User-Agent: APN/1.0 Hortonworks/1.0 HDP/2.6.5.3003-25</value>
+    </property>
+    
+    <property>
+      <name>fs.trash.interval</name>
+      <value>360</value>
+    </property>
+    
+    <property>
+      <name>ha.failover-controller.active-standby-elector.zk.op.retries</name>
+      <value>120</value>
+    </property>
+    
+    <property>
+      <name>ha.zookeeper.acl</name>
+      <value>sasl:nn:rwcda</value>
+    </property>
+    
+    <property>
+      <name>ha.zookeeper.quorum</name>
+      <value>zk0-astima.aadds.ausnetservices.com.au:2181,zk1-astima.aadds.ausnetservices.com.au:2181,zk5-astima.aadds.ausnetservices.com.au:2181</value>
+    </property>
+    
+    <property>
+      <name>hadoop.cache.data.dirprefix.list</name>
+      <value>/mnt/iocache/</value>
+    </property>
+    
+    <property>
+      <name>hadoop.cache.data.fullness.percentage</name>
+      <value>50</value>
+    </property>
+    
+    <property>
+      <name>hadoop.custom-extensions.root</name>
+      <value>/hdp/ext/2.6/hadoop</value>
+    </property>
+    
+    <property>
+      <name>hadoop.http.authentication.cookie.domain</name>
+      <value>aadds.ausnetservices.com.au</value>
+    </property>
+    
+    <property>
+      <name>hadoop.http.authentication.kerberos.keytab</name>
+      <value>/etc/security/keytabs/spnego.service.keytab</value>
+    </property>
+    
+    <property>
+      <name>hadoop.http.authentication.kerberos.principal</name>
+      <value>HTTP/_HOST@AADDS.AUSNETSERVICES.COM.AU</value>
+    </property>
+    
+    <property>
+      <name>hadoop.http.authentication.signature.secret.file</name>
+      <value>/etc/security/http_secret</value>
+    </property>
+    
+    <property>
+      <name>hadoop.http.authentication.simple.anonymous.allowed</name>
+      <value>false</value>
+    </property>
+    
+    <property>
+      <name>hadoop.http.authentication.type</name>
+      <value>kerberos</value>
+    </property>
+    
+    <property>
+      <name>hadoop.http.filter.initializers</name>
+      <value>org.apache.hadoop.security.AuthenticationFilterInitializer</value>
+    </property>
+    
+    <property>
+      <name>hadoop.proxyuser.ambari-server-astimas1devcluster.groups</name>
+      <value>*</value>
+    </property>
+    
+    <property>
+      <name>hadoop.proxyuser.ambari-server-astimas1devcluster.hosts</name>
+      <value>*</value>
+    </property>
+    
+    <property>
+      <name>hadoop.proxyuser.hcat.groups</name>
+      <value>*</value>
+    </property>
+    
+    <property>
+      <name>hadoop.proxyuser.hcat.hosts</name>
+      <value>*</value>
+    </property>
+    
+    <property>
+      <name>hadoop.proxyuser.hive.groups</name>
+      <value>*</value>
+    </property>
+    
+    <property>
+      <name>hadoop.proxyuser.hive.hosts</name>
+      <value>*</value>
+    </property>
+    
+    <property>
+      <name>hadoop.proxyuser.HTTP.groups</name>
+      <value>*</value>
+    </property>
+    
+    <property>
+      <name>hadoop.proxyuser.HTTP.hosts</name>
+      <value>hn0-astima.aadds.ausnetservices.com.au,hn1-astima.aadds.ausnetservices.com.au</value>
+    </property>
+    
+    <property>
+      <name>hadoop.proxyuser.livy.groups</name>
+      <value>*</value>
+    </property>
+    
+    <property>
+      <name>hadoop.proxyuser.livy.hosts</name>
+      <value>*</value>
+    </property>
+    
+    <property>
+      <name>hadoop.proxyuser.oozie.groups</name>
+      <value>*</value>
+    </property>
+    
+    <property>
+      <name>hadoop.proxyuser.oozie.hosts</name>
+      <value>*</value>
+    </property>
+    
+    <property>
+      <name>hadoop.proxyuser.yarn.groups</name>
+      <value>*</value>
+    </property>
+    
+    <property>
+      <name>hadoop.proxyuser.yarn.hosts</name>
+      <value>hn0-astima.aadds.ausnetservices.com.au,hn1-astima.aadds.ausnetservices.com.au</value>
+    </property>
+    
+    <property>
+      <name>hadoop.proxyuser.zeppelin.groups</name>
+      <value>*</value>
+    </property>
+    
+    <property>
+      <name>hadoop.proxyuser.zeppelin.hosts</name>
+      <value>*</value>
+    </property>
+    
+    <property>
+      <name>hadoop.security.auth_to_local</name>
+      <value>RULE:[1:$1@$0](ambari-qa-astimas1devcluster@AADDS.AUSNETSERVICES.COM.AU)s/.*/ambari-qa/
+RULE:[1:$1@$0](hdfs-astimas1devcluster@AADDS.AUSNETSERVICES.COM.AU)s/.*/hdfs/
+RULE:[1:$1@$0](spark-astimas1devcluster@AADDS.AUSNETSERVICES.COM.AU)s/.*/spark/
+RULE:[1:$1@$0](zeppelin-astimas1devcluster@AADDS.AUSNETSERVICES.COM.AU)s/.*/zeppelin/
+RULE:[1:$1@$0](.*@AADDS.AUSNETSERVICES.COM.AU)s/@.*///L
+RULE:[2:$1@$0](amshbase@AADDS.AUSNETSERVICES.COM.AU)s/.*/ams/
+RULE:[2:$1@$0](amszk@AADDS.AUSNETSERVICES.COM.AU)s/.*/ams/
+RULE:[2:$1@$0](dn@AADDS.AUSNETSERVICES.COM.AU)s/.*/hdfs/
+RULE:[2:$1@$0](hive@AADDS.AUSNETSERVICES.COM.AU)s/.*/hive/
+RULE:[2:$1@$0](jhs@AADDS.AUSNETSERVICES.COM.AU)s/.*/mapred/
+RULE:[2:$1@$0](jn@AADDS.AUSNETSERVICES.COM.AU)s/.*/hdfs/
+RULE:[2:$1@$0](livy@AADDS.AUSNETSERVICES.COM.AU)s/.*/livy/
+RULE:[2:$1@$0](nm@AADDS.AUSNETSERVICES.COM.AU)s/.*/yarn/
+RULE:[2:$1@$0](nn@AADDS.AUSNETSERVICES.COM.AU)s/.*/hdfs/
+RULE:[2:$1@$0](oozie@AADDS.AUSNETSERVICES.COM.AU)s/.*/oozie/
+RULE:[2:$1@$0](rangeradmin@AADDS.AUSNETSERVICES.COM.AU)s/.*/ranger/
+RULE:[2:$1@$0](rangerusersync@AADDS.AUSNETSERVICES.COM.AU)s/.*/rangerusersync/
+RULE:[2:$1@$0](rm@AADDS.AUSNETSERVICES.COM.AU)s/.*/yarn/
+RULE:[2:$1@$0](yarn@AADDS.AUSNETSERVICES.COM.AU)s/.*/yarn/
+DEFAULT</value>
+    </property>
+    
+    <property>
+      <name>hadoop.security.authentication</name>
+      <value>kerberos</value>
+    </property>
+    
+    <property>
+      <name>hadoop.security.authorization</name>
+      <value>true</value>
+    </property>
+    
+    <property>
+      <name>hadoop.security.instrumentation.requires.admin</name>
+      <value>true</value>
+    </property>
+    
+    <property>
+      <name>hadoop.security.key.provider.path</name>
+      <value></value>
+    </property>
+    
+    <property>
+      <name>io.compression.codec.lzo.class</name>
+      <value>com.hadoop.compression.lzo.LzoCodec</value>
+    </property>
+    
+    <property>
+      <name>io.compression.codecs</name>
+      <value>org.apache.hadoop.io.compress.GzipCodec,org.apache.hadoop.io.compress.DefaultCodec,org.apache.hadoop.io.compress.SnappyCodec,com.hadoop.compression.lzo.LzoCodec,com.hadoop.compression.lzo.LzopCodec</value>
+    </property>
+    
+    <property>
+      <name>io.file.buffer.size</name>
+      <value>131072</value>
+    </property>
+    
+    <property>
+      <name>io.serializations</name>
+      <value>org.apache.hadoop.io.serializer.WritableSerialization</value>
+    </property>
+    
+    <property>
+      <name>iocache.cache.nonlocal.blocks.from.remote</name>
+      <value>true</value>
+    </property>
+    
+    <property>
+      <name>iocachedisabled.fs.AbstractFileSystem.wasb.impl</name>
+      <value>org.apache.hadoop.fs.azure.Wasb</value>
+    </property>
+    
+    <property>
+      <name>iocachedisabled.fs.AbstractFileSystem.wasbs.impl</name>
+      <value>org.apache.hadoop.fs.azure.Wasbs</value>
+    </property>
+    
+    <property>
+      <name>iocachedisabled.fs.wasb.impl</name>
+      <value>org.apache.hadoop.fs.azure.NativeAzureFileSystem</value>
+    </property>
+    
+    <property>
+      <name>iocachedisabled.fs.wasbs.impl</name>
+      <value>org.apache.hadoop.fs.azure.NativeAzureFileSystem</value>
+    </property>
+    
+    <property>
+      <name>iocacheenabled.fs.AbstractFileSystem.wasb.impl</name>
+      <value>com.qubole.rubix.hadoop2.CachingAbstractNativeAzureFileSystem</value>
+    </property>
+    
+    <property>
+      <name>iocacheenabled.fs.AbstractFileSystem.wasbs.impl</name>
+      <value>com.qubole.rubix.hadoop2.CachingAbstractNativeAzureSecureFileSystem</value>
+    </property>
+    
+    <property>
+      <name>iocacheenabled.fs.wasb.impl</name>
+      <value>com.qubole.rubix.hadoop2.CachingNativeAzureFileSystem</value>
+    </property>
+    
+    <property>
+      <name>iocacheenabled.fs.wasbs.impl</name>
+      <value>com.qubole.rubix.hadoop2.CachingNativeAzureSecureFileSystem</value>
+    </property>
+    
+    <property>
+      <name>ipc.client.connect.max.retries</name>
+      <value>50</value>
+    </property>
+    
+    <property>
+      <name>ipc.client.connection.maxidletime</name>
+      <value>30000</value>
+    </property>
+    
+    <property>
+      <name>ipc.client.idlethreshold</name>
+      <value>8000</value>
+    </property>
+    
+    <property>
+      <name>ipc.server.tcpnodelay</name>
+      <value>true</value>
+    </property>
+    
+    <property>
+      <name>mapreduce.jobtracker.webinterface.trusted</name>
+      <value>false</value>
+    </property>
+    
+    <property>
+      <name>net.topology.script.file.name</name>
+      <value>/etc/hadoop/conf/topology_script.py</value>
+    </property>
+    
+  </configuration>

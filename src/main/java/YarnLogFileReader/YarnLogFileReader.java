@@ -9,6 +9,7 @@ import org.apache.hadoop.yarn.conf.YarnConfiguration;
 import org.apache.hadoop.yarn.logaggregation.filecontroller.ifile.LogAggregationIndexedFileController;
 
 import java.io.BufferedReader;
+import java.io.EOFException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.*;
@@ -51,11 +52,20 @@ public class YarnLogFileReader
         FSDataInputStream fsDataInputStream = fileContext.open(path);
         FSDataInputStream fsDataInputStream1 = fileContext.open(path);
         long fileLength = fileContext.getFileStatus(path).getLen();
-        fsDataInputStream.seek(fileLength - 4L - 32L);
+        try {
+            fsDataInputStream.seek(fileLength - 4L - 32L);
+        } catch (EOFException ex) {
+            System.out.printf("The file %s not an indexed formatted log file", path.toString());
+            return;
+        }
         int offset = fsDataInputStream.readInt();
-
         byte[] array = new byte[offset];
-        fsDataInputStream.seek(fileLength - (long)offset - 4L - 32L);
+        try {
+            fsDataInputStream.seek(fileLength - (long) offset - 4L - 32L);
+        } catch (EOFException ex) {
+            System.out.printf("The file %s is not an indexed formatted log file", path.toString());
+            return;
+        }
         int actual = fsDataInputStream.read(array);
 
         LogAggregationIndexedFileController.IndexedLogsMeta logMeta = (LogAggregationIndexedFileController.IndexedLogsMeta) SerializationUtils.deserialize(array);

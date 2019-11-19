@@ -30,14 +30,20 @@ public class YarnLogFileReader
             System.exit(1);
         }
 
-        Configuration conf = new YarnConfiguration();
-
         YarnLogFileReader app = new YarnLogFileReader();
         app.printAllContainerLog(args[0]);
     }
 
     public void printAllContainerLog(String file) throws Exception {
         Configuration conf = new YarnConfiguration();
+
+        // workaround iocache
+        if (conf.get("fs.wasb.impl") == null){
+            conf.set("fs.AbstractFileSystem.wasb.impl", "fs.AbstractFileSystem.wasb.impl");
+            conf.set("fs.AbstractFileSystem.wasbs.impl", "org.apache.hadoop.fs.azure.Wasbs");
+            conf.set("fs.wasb.impl", "org.apache.hadoop.fs.azure.NativeAzureFileSystem");
+            conf.set("fs.wasbs.impl", "org.apache.hadoop.fs.azure.NativeAzureFileSystem");
+        }
         List result = getAllFiles(new Path(file), conf);
         for(int i = 0; i < result.size(); i++) {
             printContainerLogForFile((Path) result.get(i), conf);

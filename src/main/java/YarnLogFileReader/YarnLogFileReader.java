@@ -39,7 +39,7 @@ public class YarnLogFileReader
 
         // workaround iocache
         if (conf.get("fs.wasb.impl") == null){
-            conf.set("fs.AbstractFileSystem.wasb.impl", "fs.AbstractFileSystem.wasb.impl");
+            conf.set("fs.AbstractFileSystem.wasb.impl", "org.apache.hadoop.fs.azure.Wasb");
             conf.set("fs.AbstractFileSystem.wasbs.impl", "org.apache.hadoop.fs.azure.Wasbs");
             conf.set("fs.wasb.impl", "org.apache.hadoop.fs.azure.NativeAzureFileSystem");
             conf.set("fs.wasbs.impl", "org.apache.hadoop.fs.azure.NativeAzureFileSystem");

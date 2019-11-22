@@ -1,5 +1,5 @@
 # /bin/bash
 
-export CLASSPATH=/etc/hadoop/conf:./target/YarnLogFileReader-1.0-SNAPSHOT-dependencies.jar
+export CLASSPATH=/etc/hadoop/conf:./target/YarnLogFileReader-1.0-SNAPSHOT-dependencies.jar:/usr/hdp/current/hadoop-hdfs-client/lib/adls2-oauth2-token-provider.jar
 
 java YarnLogFileReader.YarnLogFileReader $1

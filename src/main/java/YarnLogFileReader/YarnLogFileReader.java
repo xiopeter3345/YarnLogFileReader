@@ -18,6 +18,8 @@ import org.apache.hadoop.io.file.tfile.Compression;
 
 import java.security.MessageDigest;
 import org.apache.commons.codec.binary.Base64;
+import sun.rmi.runtime.Log;
+
 import java.security.SecureRandom;
 
 public class YarnLogFileReader
@@ -112,7 +114,7 @@ public class YarnLogFileReader
 
                     default:
 
-                        System.out.println("not supported scheme " + scheme);
+                        System.out.println("Try local file system");
                 }
             } else {
 
@@ -180,63 +182,37 @@ public class YarnLogFileReader
 
         List result = getAllFiles(new Path(file));
         for(int i = 0; i < result.size(); i++) {
-            printContainerLogForFile((Path) result.get(i), conf);
+            printContainerLogForFile((Path) result.get(i));
         }
     }
 
-    private void printContainerLogForFile(Path path, Configuration conf) throws Exception {
+    private void printContainerLogForFile(Path path) throws Exception {
         Algorithm compressName = Compression.getCompressionAlgorithmByName("gz");
         Decompressor decompressor = compressName.getDecompressor();
 
+        LogReader logReader = probeFileFormat(path);
+
+        logReader.printContainerLogForFile(path, conf);
+    }
+
+    private LogReader probeFileFormat(Path path) throws Exception {
         FileContext fileContext = FileContext.getFileContext(path.toUri(), conf);
         FSDataInputStream fsDataInputStream = fileContext.open(path);
-        FSDataInputStream fsDataInputStream1 = fileContext.open(path);
         long fileLength = fileContext.getFileStatus(path).getLen();
         try {
             fsDataInputStream.seek(fileLength - 4L - 32L);
-        } catch (EOFException ex) {
-            System.out.printf("The file %s not an indexed formatted log file", path.toString());
-            return;
-        }
-        int offset = fsDataInputStream.readInt();
-        byte[] array = new byte[offset];
-        try {
+            int offset = fsDataInputStream.readInt();
+            byte[] array = new byte[offset];
             fsDataInputStream.seek(fileLength - (long) offset - 4L - 32L);
-        } catch (EOFException ex) {
-            System.out.printf("The file %s is not an indexed formatted log file", path.toString());
-            return;
-        }
-        int actual = fsDataInputStream.read(array);
+            fsDataInputStream.close();
+            return new IndexedFormatLogReader();
+        } catch (EOFException eofex) {
 
-        LogAggregationIndexedFileController.IndexedLogsMeta logMeta = (LogAggregationIndexedFileController.IndexedLogsMeta) SerializationUtils.deserialize(array);
-        Iterator iter = logMeta.getLogMetas().iterator();
-        while(iter.hasNext()) {
-            LogAggregationIndexedFileController.IndexedPerAggregationLogMeta perAggregationLogMeta = (LogAggregationIndexedFileController.IndexedPerAggregationLogMeta) iter.next();
-            Iterator iter1 = new TreeMap(perAggregationLogMeta.getLogMetas()).entrySet().iterator();
-            while(iter1.hasNext()) {
-                Map.Entry<String, List<LogAggregationIndexedFileController.IndexedFileLogMeta>> log = (Map.Entry) iter1.next();
-                Iterator iter2 = log.getValue().iterator();
-                InputStream in = null;
-                while(iter2.hasNext()) {
-                    LogAggregationIndexedFileController.IndexedFileLogMeta indexedFileLogMeta = (LogAggregationIndexedFileController.IndexedFileLogMeta) iter2.next();
-                    in = compressName.createDecompressionStream(new BoundedRangeFileInputStream(fsDataInputStream1, indexedFileLogMeta.getStartIndex(), indexedFileLogMeta.getFileCompressedSize()), decompressor, 262144);
-                    StringBuilder sb = new StringBuilder();
-                    String containerStr = String.format("Container: %s on %s", indexedFileLogMeta.getContainerId(), path.getName());
-                    sb.append(containerStr + "\n");
-                    sb.append("LogType: " + indexedFileLogMeta.getFileName() + "\n");
-                    sb.append("LogLastModifiedTime: " + new Date(indexedFileLogMeta.getLastModifiedTime()) + "\n");
-                    sb.append("LogLength: " + indexedFileLogMeta.getFileSize() + "\n");
-                    sb.append("LogContents:\n");
-                    BufferedReader br = new BufferedReader(new InputStreamReader(in));
-                    System.out.println(sb.toString());
-                    String line = null;
-                    while((line = br.readLine()) != null) {
-                        System.out.println(line);
-                    }
-
-                    System.out.printf("End of LogType: %s\n", indexedFileLogMeta.getFileName());
-                    System.out.printf("*****************************************************************************\n\n");
-                }
+            try {
+                return new TFileLogReader();
+            } catch(Exception ex) {
+                System.out.printf("The file %s not an indexed formatted log file", path.toString());
+                return null;
             }
         }
     }

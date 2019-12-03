@@ -1,12 +1,11 @@
 package YarnLogFileReader;
 
-import org.apache.commons.lang3.SerializationUtils;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.*;
+import org.apache.hadoop.fs.azure.AzureException;
 import org.apache.hadoop.io.compress.Decompressor;
-import org.apache.hadoop.io.file.tfile.BoundedRangeFileInputStream;
 import org.apache.hadoop.yarn.conf.YarnConfiguration;
-import org.apache.hadoop.yarn.logaggregation.filecontroller.ifile.LogAggregationIndexedFileController;
+import org.apache.hadoop.yarn.logaggregation.AggregatedLogFormat;
 
 import java.io.*;
 import java.net.InetAddress;
@@ -15,10 +14,6 @@ import java.util.*;
 
 import org.apache.hadoop.io.file.tfile.Compression.Algorithm;
 import org.apache.hadoop.io.file.tfile.Compression;
-
-import java.security.MessageDigest;
-import org.apache.commons.codec.binary.Base64;
-import sun.rmi.runtime.Log;
 
 import java.security.SecureRandom;
 
@@ -44,14 +39,12 @@ public class YarnLogFileReader
 
     public static void main( String[] args ) throws Exception
     {
-        /*if(args.length != 1) {
-            System.out.println("Usage: java -classpath <> YarnLogFileReader.YarnLogFileReader <full path of folder contains logs>" );
-            System.out.println("Example: java -classpath '/usr/hdp/2.6.5.3008-11/hadoop/client/*:/usr/hdp/2.6.5.3008-11/hadoop/*:/home/sshuser/YarnLogFileReader/target/YarnLogFileReader-1.0-SNAPSHOT.jar:.:/etc/hadoop/conf' YarnLogFileReader.YarnLogFileReader wasb://lazhuhdi-2019-05-09t07-12-39-811z@lzlazhuhdi.blob.core.windows.net//app-logs/chenghao.guo/logs-ifile/application_1557457099458_0010");
+        if(args.length != 1) {
+            System.out.println("Usage: java -classpath '/etc/hadoop/conf:./target/YarnLogFileReader-1.0-SNAPSHOT-dependencies.jar:/usr/hdp/current/hadoop-hdfs-client/lib/adls2-oauth2-token-provider.jar' YarnLogFileReader.YarnLogFileReader <path of folder contains logs>" );
+            System.out.println("Example: java -classpath '/etc/hadoop/conf:./target/YarnLogFileReader-1.0-SNAPSHOT-dependencies.jar:/usr/hdp/current/hadoop-hdfs-client/lib/adls2-oauth2-token-provider.jar' YarnLogFileReader.YarnLogFileReader wasb://lazhuhdi-2019-05-09t07-12-39-811z@lzlazhuhdi.blob.core.windows.net//app-logs/chenghao.guo/logs-ifile/application_1557457099458_0010");
             System.exit(1);
         }
 
-        YarnLogFileReader app = new YarnLogFileReader();
-        app.printAllContainerLog(args[0]);*/
         try {
             InetAddress headnodehost = InetAddress.getByName("headnodehost");
         } catch(UnknownHostException ex) {
@@ -96,7 +89,6 @@ public class YarnLogFileReader
                         break;
 
                     case "adl":
-                    case "adls":
                         System.out.println("Scheme is adls gen1");
 
                         System.out.print("Client ID:");
@@ -118,7 +110,7 @@ public class YarnLogFileReader
                 }
             } else {
 
-                System.out.print("Type scheme (wasb, wasbs, abfs, abfss, adl, adls):");
+                System.out.print("Type scheme (wasb, wasbs, abfs, abfss, adl):");
                 String scheme = reader.readLine();
 
                 switch (scheme) {
@@ -131,19 +123,20 @@ public class YarnLogFileReader
                             System.out.println("Scheme is blob storage");
                         else
                             System.out.println("Scheme is adls gen2");
-                        System.out.print("Account Name (short name):");
+                        System.out.print("Storage Account Name:");
                         String accountName = reader.readLine();
+                        accountName = resolveAccountName(accountName, scheme);
                         System.out.print("Container Name:");
                         String containerName = reader.readLine();
                         System.out.print("Storage key:");
                         String storageKey = reader.readLine();
 
                         if("wasb".equals(scheme) || "wasbs".equals(scheme)) {
-                            conf.set("fs.defaultFS", scheme + "://" + containerName + "@" + accountName + ".blob.core.windows.net");
-                            conf.set("fs.azure.account.key." + accountName + ".blob.core.windows.net", storageKey);
+                            conf.set("fs.defaultFS", scheme + "://" + containerName + "@" + accountName);
+                            conf.set("fs.azure.account.key." + accountName, storageKey);
                         } else {
-                            conf.set("fs.defaultFS", scheme + "://" + containerName + "@" + accountName + ".dfs.core.windows.net");
-                            conf.set("fs.azure.account.key." + accountName + ".dfs.core.windows.net", storageKey);
+                            conf.set("fs.defaultFS", scheme + "://" + containerName + "@" + accountName);
+                            conf.set("fs.azure.account.key." + accountName, storageKey);
                         }
 
                         break;
@@ -152,8 +145,9 @@ public class YarnLogFileReader
 
                         System.out.println("Scheme is adls gen1");
 
-                        System.out.print("Account Name (short name):");
+                        System.out.print("Data Lake Account Name:");
                         String adlsAccountName = reader.readLine();
+                        adlsAccountName = resolveAccountName(adlsAccountName, scheme);
                         System.out.print("Client ID:");
                         String clientId = reader.readLine();
                         System.out.print("Client Secret:");
@@ -161,7 +155,7 @@ public class YarnLogFileReader
                         System.out.print("Tenant ID:");
                         String tenantId = reader.readLine();
 
-                        conf.set("fs.defaultFS", scheme + "://" + adlsAccountName + ".azuredatalakestore.net");
+                        conf.set("fs.defaultFS", scheme + "://" + adlsAccountName);
                         conf.set("dfs.adls.oauth.access.token.provider.type", "ClientCredential");
                         conf.set("dfs.adls.oauth2.refresh.url", "https://login.microsoftonline.com/"+tenantId+"/oauth2/token");
                         conf.set("dfs.adls.oauth2.client.id", clientId);
@@ -178,9 +172,34 @@ public class YarnLogFileReader
         }
     }
 
-    public void printAllContainerLog(String file) throws Exception {
+    private String resolveAccountName(String accountName, String scheme) {
+
+        if(accountName.indexOf(".") != -1)
+            accountName = accountName.substring(0, accountName.indexOf("."));
+        switch(scheme) {
+            case "wasb":
+            case "wasbs":
+                accountName += ".blob.core.windows.net";
+                break;
+            case "abfs":
+            case "abfss":
+                accountName += ".dfs.core.windows.net";
+                break;
+            case "adl":
+                accountName += ".azuredatalakestore.net";
+                break;
+        }
+
+        return accountName;
+    }
+
+    private void printAllContainerLog(String file) throws Exception {
 
         List result = getAllFiles(new Path(file));
+        if(result.size() == 0) {
+            System.out.println("No file found");
+            System.exit(0);
+        }
         for(int i = 0; i < result.size(); i++) {
             printContainerLogForFile((Path) result.get(i));
         }
@@ -190,9 +209,13 @@ public class YarnLogFileReader
         Algorithm compressName = Compression.getCompressionAlgorithmByName("gz");
         Decompressor decompressor = compressName.getDecompressor();
 
-        LogReader logReader = probeFileFormat(path);
+        try {
+            LogReader logReader = probeFileFormat(path);
 
-        logReader.printContainerLogForFile(path, conf);
+            logReader.printContainerLogForFile(path, conf);
+        }catch(Exception ex){
+            return;
+        }
     }
 
     private LogReader probeFileFormat(Path path) throws Exception {
@@ -209,29 +232,35 @@ public class YarnLogFileReader
         } catch (EOFException eofex) {
 
             try {
+                AggregatedLogFormat.LogReader reader = new AggregatedLogFormat.LogReader(conf, path);
                 return new TFileLogReader();
             } catch(Exception ex) {
-                System.out.printf("The file %s not an indexed formatted log file", path.toString());
-                return null;
+                System.out.printf("The file %s is not an indexed formatted log file\n", path.toString());
+                throw ex;
             }
         }
     }
 
     private List getAllFiles(Path path) throws Exception {
 
-        FileSystem fs = FileSystem.newInstance(conf);
-        if (!fs.getFileStatus(path).isDirectory())
-            list.add(path);
-        else {
-            FileStatus[] files = fs.listStatus(path);
-            for(int i = 0; i < files.length; i++){
-                if(files[i].isDirectory())
-                    getAllFiles(files[i].getPath());
-                else
-                    list.add(files[i].getPath());
+        try {
+            FileSystem fs = FileSystem.newInstance(conf);
+            if (!fs.getFileStatus(path).isDirectory())
+                list.add(path);
+            else {
+                FileStatus[] files = fs.listStatus(path);
+                for (int i = 0; i < files.length; i++) {
+                    if (files[i].isDirectory())
+                        getAllFiles(files[i].getPath());
+                    else
+                        list.add(files[i].getPath());
+                }
             }
+            return list;
+        } catch (AzureException ex) {
+            System.out.println("Unable to initialize the filesystem or unable to list file status, please check input parameters");
+            throw ex;
         }
-        return list;
     }
 
 }

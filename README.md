@@ -38,7 +38,7 @@ sudo apt-get install maven
 
    Blob Storage: Storage Key
 
-   Azure Datalake Gen 2: Storage kKey
+   Azure Datalake Gen 2: Storage Key
 
    Azure Datalake Gen 1: ClientId, ClientSecret, TenantId
 

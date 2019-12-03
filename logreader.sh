@@ -1,6 +1,6 @@
 # /bin/bash
 
-if [! -f "./target/YarnLogFileReader-1.0-SNAPSHOT-dependencies.jar"]; then
+if [ ! -f "./target/YarnLogFileReader-1.0-SNAPSHOT-dependencies.jar" ]; then
     mvn package assembly:single
 fi
 

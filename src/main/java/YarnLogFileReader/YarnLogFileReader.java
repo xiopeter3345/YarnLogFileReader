@@ -67,6 +67,7 @@ public class YarnLogFileReader
 
         if (!isCluster) {
 
+            Console console = System.console();
             BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 
             int schemeIndex;
@@ -82,20 +83,25 @@ public class YarnLogFileReader
                             System.out.println("Scheme is blob storage");
                         else
                             System.out.println("Scheme is adls gen2");
-                        System.out.print("Storage key:");
-                        String storageKey = reader.readLine();
                         String accountName = path.substring(path.indexOf("@")+1, path.indexOf("/", schemeIndex+3));
+                        System.out.printf("Storage key (%s):", accountName);
+                        char[] storageKeyChars = console.readPassword();
+                        String storageKey = new String(storageKeyChars);
+
                         conf.set("fs.azure.account.key."+accountName, storageKey);
                         break;
 
                     case "adl":
                         System.out.println("Scheme is adls gen1");
 
-                        System.out.print("Client ID:");
+                        String adlsAccountName = path.substring(schemeIndex+3, path.indexOf("/", schemeIndex+3));
+
+                        System.out.printf("Client ID (%s): ", adlsAccountName);
                         String clientId = reader.readLine();
-                        System.out.print("Client Secret:");
-                        String clientSecret = reader.readLine();
-                        System.out.print("Tenant ID:");
+                        System.out.printf("Client Secret (%s): ", adlsAccountName);
+                        char[] clientSecretChars = console.readPassword();
+                        String clientSecret = new String(clientSecretChars);
+                        System.out.printf("Tenant ID (%s): ", adlsAccountName);
                         String tenantId = reader.readLine();
 
                         conf.set("dfs.adls.oauth.access.token.provider.type", "ClientCredential");
@@ -126,10 +132,11 @@ public class YarnLogFileReader
                         System.out.print("Storage Account Name:");
                         String accountName = reader.readLine();
                         accountName = resolveAccountName(accountName, scheme);
-                        System.out.print("Container Name:");
+                        System.out.printf("Container Name (%s): ", accountName);
                         String containerName = reader.readLine();
-                        System.out.print("Storage key:");
-                        String storageKey = reader.readLine();
+                        System.out.printf("Storage key (%s): ", accountName);
+                        char[] storageKeyChars = console.readPassword();
+                        String storageKey = new String(storageKeyChars);
 
                         if("wasb".equals(scheme) || "wasbs".equals(scheme)) {
                             conf.set("fs.defaultFS", scheme + "://" + containerName + "@" + accountName);
@@ -148,11 +155,12 @@ public class YarnLogFileReader
                         System.out.print("Data Lake Account Name:");
                         String adlsAccountName = reader.readLine();
                         adlsAccountName = resolveAccountName(adlsAccountName, scheme);
-                        System.out.print("Client ID:");
+                        System.out.printf("Client ID (%s): ", adlsAccountName);
                         String clientId = reader.readLine();
-                        System.out.print("Client Secret:");
-                        String clientSecret = reader.readLine();
-                        System.out.print("Tenant ID:");
+                        System.out.printf("Client Secret (%s): ", adlsAccountName);
+                        char[] clientSecretChars = console.readPassword();
+                        String clientSecret = new String(clientSecretChars);
+                        System.out.printf("Tenant ID (%s): ", adlsAccountName);
                         String tenantId = reader.readLine();
 
                         conf.set("fs.defaultFS", scheme + "://" + adlsAccountName);

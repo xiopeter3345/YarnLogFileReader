@@ -36,9 +36,9 @@ sudo apt-get install maven
 
 2. For different type of storage, the following information needs to be provided if not running on cluster.
 
-Blob Storage: Storage Key
-Azure Datalake Gen 2: Storage kKey
-Azure Datalake Gen 1: ClientId, ClientSecret, TenantId
+   Blob Storage: Storage Key
+   Azure Datalake Gen 2: Storage kKey
+   Azure Datalake Gen 1: ClientId, ClientSecret, TenantId
 
 3. If you could not get the following information, you could try to download the file from storage and print the log locally. When it asks for scheme, just type Enter will make the program to use file:// as scheme which will read local file.
 

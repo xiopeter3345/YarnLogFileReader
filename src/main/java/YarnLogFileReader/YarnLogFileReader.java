@@ -73,7 +73,7 @@ public class YarnLogFileReader
             int schemeIndex;
             if ((schemeIndex = path.indexOf("://")) != -1) {
                 String scheme = path.substring(0, schemeIndex);
-                conf.set("fs.defaultFS", path.substring(0, path.indexOf("/", schemeIndex+3)));
+                
                 switch (scheme) {
                     case "wasb":
                     case "wasbs":
@@ -89,6 +89,7 @@ public class YarnLogFileReader
                         String storageKey = new String(storageKeyChars);
 
                         conf.set("fs.azure.account.key."+accountName, storageKey);
+                        conf.set("fs.defaultFS", path.substring(0, path.indexOf("/", schemeIndex+3)));
                         break;
 
                     case "adl":
@@ -108,10 +109,12 @@ public class YarnLogFileReader
                         conf.set("dfs.adls.oauth2.refresh.url", "https://login.microsoftonline.com/"+tenantId+"/oauth2/token");
                         conf.set("dfs.adls.oauth2.client.id", clientId);
                         conf.set("dfs.adls.oauth2.credential", clientSecret);
+                        conf.set("fs.defaultFS", path.substring(0, path.indexOf("/", schemeIndex+3)));
                         break;
 
                     default:
-
+                        conf.set("fs.defaultFS", "file:///");
+                        conf.set("fs.AbstractFileSystem.file.impl", "org.apache.hadoop.fs.local.LocalFs");
                         System.out.println("Try local file system");
                 }
             } else {
@@ -233,11 +236,13 @@ public class YarnLogFileReader
         try {
             fsDataInputStream.seek(fileLength - 4L - 32L);
             int offset = fsDataInputStream.readInt();
+            if(offset >= 10485760)
+                    throw new Exception();
             byte[] array = new byte[offset];
             fsDataInputStream.seek(fileLength - (long) offset - 4L - 32L);
             fsDataInputStream.close();
             return new IndexedFormatLogReader();
-        } catch (EOFException eofex) {
+        } catch (Exception eofex) {
 
             try {
                 AggregatedLogFormat.LogReader reader = new AggregatedLogFormat.LogReader(conf, path);
